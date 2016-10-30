@@ -1,0 +1,36 @@
+<h2><%= l(:notifications)%></h2>
+
+<%= labelled_form_for :notification, @notification, :url =>{:action => 'index'}, :html => {:id => 'notification_form'} do |f|  %>
+  <%= error_messages_for 'notification' %>
+  <div class="box tabular">
+    <p>
+      <%= f.select 'logged_since_option', @logged_since_options, :selected => @notification.logged_since_option, :required => true %>
+      <span id="number_of_recipients"><%= render :partial => 'number_of_recipients', :object => @count_logged_users %></span>
+    </p>
+    <p>
+      <%= f.text_field 'subject', :required => true, :size => 80 %>
+    </p>
+    <p>
+      <%= f.text_area 'body', :required => true, :rows => 7, :class => 'wiki-edit' %>
+      <%= wikitoolbar_for 'notification_body' %>
+    </p>
+  </div>
+  <%= submit_tag l(:button_send) %>
+  <%= preview_link preview_notification_path(), 'notification_form' %>
+<% end %>
+
+<div id="preview" class="wiki"></div>
+
+<script type="text/javascript">
+$(function() {
+  var $nor = $('#number_of_recipients');
+  $('#notification_logged_since_option').change(function() {
+    var value = $(this).attr('value');
+    $.ajax( '<%= notification_numberofrecipients_path() %>', {
+      data: { logged_since_option: value }
+    }).done(function(data) { 
+      $nor.html(data);
+    });
+  });
+});
+</script>

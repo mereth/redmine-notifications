@@ -1,0 +1,11 @@
+fr:
+  notifications: Notifications
+  field_logged_since_option: Destinataires
+  field_body: Corps du message
+  button_send: Envoyer
+  text_none: "Aucun"
+  text_24_hours: "24 heures"
+  text_1_week: "1 semaine"
+  text_1_month: "1 mois"
+  text_1_year: "1 année"
+  text_all_time: "Tous"
