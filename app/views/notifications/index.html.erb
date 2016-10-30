@@ -21,11 +21,11 @@
 
 <div id="preview" class="wiki"></div>
 
-<script type="text/javascript">
+<script>
 $(function() {
   var $nor = $('#number_of_recipients');
   $('#notification_logged_since_option').change(function() {
-    var value = $(this).attr('value');
+    var value = $(this).val();
     $.ajax( '<%= notification_numberofrecipients_path() %>', {
       data: { logged_since_option: value }
     }).done(function(data) { 

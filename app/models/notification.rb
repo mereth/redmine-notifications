@@ -27,7 +27,7 @@ class Notification
   
   def set_recipients_list()
     if @logged_since_option.to_sym == :all
-      @recipients = User.find(:all, :conditions => ['status = ?', User::STATUS_ACTIVE])
+      @recipients = User.where(:status => User::STATUS_ACTIVE)
     else
       case @logged_since_option.to_sym
         when :day
@@ -41,15 +41,16 @@ class Notification
       end
       
       if logged_since
-        @recipients = User.find(:all, :conditions => ['last_login_on > (?) AND status = ?', logged_since, User::STATUS_ACTIVE])
+        @recipients = User.where("last_login_on > :logged_since AND status = :status", { logged_since: logged_since, status: User::STATUS_ACTIVE} )
       end
     end
   end
 
   def self.count_users_logged_since(logged_since_option)
-    userscount = 0
+    nbUsers = 0
+	nbAllUsers = User.where(:status => User::STATUS_ACTIVE).count
     if logged_since_option.to_sym == :all
-      userscount = User.count(:conditions => ['status = ?', User::STATUS_ACTIVE])
+      nbUsers = nbAllUsers
     else
       case logged_since_option.to_sym
         when :day
@@ -63,11 +64,11 @@ class Notification
       end
       
       if logged_since
-        userscount = User.count(:conditions => ['last_login_on > (?) AND status = ?', logged_since, User::STATUS_ACTIVE])
+        nbUsers = User.where("last_login_on > :logged_since AND status = :status", { logged_since: logged_since, status: User::STATUS_ACTIVE} ).count
       end
     end
     
-    return userscount
+    return { all: nbAllUsers, filtered: nbUsers }
   end
   
   def to_key

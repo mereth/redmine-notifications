@@ -1,1 +1,1 @@
- (<%= number_of_recipients %>/<%= User.count(:conditions => ['status = ?', User::STATUS_ACTIVE]) %>) <%= l(:label_user).pluralize %>
+ (<%= number_of_recipients[:filtered] %>/<%= number_of_recipients[:all] %>) <%= l(:label_user).pluralize %>
